@@ -2,6 +2,7 @@
 
 var express = require('express');
 var bodyParser = require('body-parser');
+var momentum = require('./lib/momentum');
 var routes = require('./routes/index');
 var app = express();
 
@@ -46,5 +47,7 @@ app.use(function (err, req, res) {
     error: {}
   });
 });
+
+momentum.start();
 
 module.exports = app;

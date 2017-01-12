@@ -4,9 +4,8 @@ var express = require('express');
 var momentum = require('../lib/momentum');
 var router = express.Router();
 
-/* GET home page. */
-router.get('/change', function(req, res) {
-  momentum.init()
+router.get('/start', function(req, res) {
+  return momentum.start()
     .then(function(result) {
       res.send(result);
     })
