@@ -9,12 +9,6 @@ var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-// Check if local storage is defined
-var localStorage = process.env.LOCAL_STORAGE;
-if (!localStorage) {
-  throw new Error('Local storage is not defined.');
-}
-
 app.use('/', routes);
 
 // catch 404 and forward to error handler
