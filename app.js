@@ -7,7 +7,9 @@ var Promise = require('bluebird');
 var rimraf = Promise.promisify(require('rimraf'));
 var sqlite3 = Promise.promisifyAll(require('sqlite3').verbose());
 var wallpaper = require('wallpaper');
+var schedule = require('node-schedule');
 
+// Get the correct Momentum image based on the os platform
 var platform = os.platform();
 var localStorageFile = os.homedir();
 if (platform === 'darwin') {
@@ -19,6 +21,9 @@ if (platform === 'darwin') {
 }
 localStorageFile += 'chrome-extension_laookkfknpbbblfpciffpaejjkokdgca_0.localstorage';
 
+/**
+ * Main function that changes the desktop background
+ */
 function start() {
   var localStorage = new sqlite3.Database(localStorageFile);
   var table = 'ItemTable';
@@ -50,6 +55,9 @@ function start() {
     });
 }
 
+/**
+ * Generate random integer to use as part of the background image name
+ */
 function getRandomInt(min, max) {
   return Math.round(Math.random() * (max - min) + min);
 }
@@ -67,4 +75,12 @@ function getTodayDate() {
   return `${year}-${month}-${date}`;
 }
 
-start();
+
+if (process.env.NODE_ENV === 'test') {
+  start();
+} else {
+  start();
+  schedule.scheduleJob({hour: 0, minute: 0}, () => {
+    start();
+  });
+}
